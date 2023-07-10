@@ -1,5 +1,28 @@
 # vb.mi-dev
 
+
+This friendly fork of Volker Boehm's excellent [vb.mi-dev objects](https://github.com/v7b1/vb.mi-dev) has the following changes:
+
+- macOS only
+
+- Homebrew based dependency management instead of building everything in-source in `libs`
+
+Therefore it requires:
+
+```bash
+
+brew libsamplerate
+
+```
+
+- Defaults to native architecture architectures (no universal binaries by default)
+
+- Added a Makefile to kick off the cmake build
+
+The original README starts from here:
+
+--- 
+
 Several MaxMSP clones of eurorack modules originally created by 'mutable instruments' https://mutable-instruments.net/ 
 
 Many thanks to Émilie Gillet for making the source code available!

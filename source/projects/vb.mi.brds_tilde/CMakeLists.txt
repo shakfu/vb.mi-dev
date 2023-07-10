@@ -4,10 +4,7 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/../../max-sdk-base/script/max-pretarget.cmak
 set(MUTABLE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../mutableSources32")
 set(STMLIB_PATH ${MUTABLE_PATH}/stmlib)
 set(MI_PATH ${MUTABLE_PATH}/braids)
-set(LIBSR_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../libs/libsamplerate")
 
-#set(LIBSR_PATH "${CMAKE_CURRENT_SOURCE_DIR}/libsamplerate/build/src")
-#set(LIBSRI_PATH "${CMAKE_CURRENT_SOURCE_DIR}/libsamplerate/include")
 
 set(STMLIB_SOURCES 
 	${STMLIB_PATH}/stmlib.h
@@ -42,14 +39,11 @@ set(MI_SOURCES
 
 set(BUILD_SOURCES 
 	${PROJECT_NAME}.cpp
-	# ${LIB_PATH}/samplerate.h
 )
 
 
 include_directories( 
 	"${C74_INCLUDES}"
-    ${MUTABLE_PATH}
-	${LIBSR_PATH}/include
 )
 
 
@@ -62,6 +56,12 @@ add_library(
 	${BUILD_SOURCES}
 )
 
+target_include_directories(${PROJECT_NAME}
+	PUBLIC
+	${MUTABLE_PATH}
+	${HOMEBREW_PREFIX}/include
+)
+
 
 # add preprocessor macro TEST to avoid asm functions
 target_compile_definitions(${PROJECT_NAME} PUBLIC TEST)
@@ -69,12 +69,12 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC TEST)
 # create groups in our project
 source_group(TREE ${MUTABLE_PATH} FILES ${MI_SOURCES} ${STMLIB_SOURCES})
 
-if(APPLE)
-	target_link_libraries(${PROJECT_NAME} PUBLIC "-framework Accelerate")
-	target_link_libraries(${PROJECT_NAME} PUBLIC ${LIBSR_PATH}/build/src/libsamplerate.a)
-else()
-	target_link_libraries(${PROJECT_NAME} PUBLIC ${LIBSR_PATH}/build/src/Release/samplerate.lib)
-endif()
+
+target_link_libraries(${PROJECT_NAME}
+	PUBLIC 
+	${HOMEBREW_PREFIX}/lib/libsamplerate.a
+	"-framework Accelerate"
+)
 
         
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../max-sdk-base/script/max-posttarget.cmake)
