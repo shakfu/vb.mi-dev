@@ -1,7 +1,7 @@
 
 DEPENDENCIES = libsamplerate
 
-.PHONY: check build setup clean reset
+.PHONY: check build setup update link clean reset
 
 
 all: build
@@ -17,10 +17,15 @@ check:
 build:
 	@mkdir -p build && cd build && cmake -G Xcode .. && cmake --build . --config 'Release'
 
-setup:
+link:
+	ln -s $(shell pwd) "$(HOME)/Documents/Max 8/Packages/$(shell basename `pwd`)"
+
+update:
 	git submodule init
 	git submodule update
-	ln -s $(shell pwd) "$(HOME)/Documents/Max 8/Packages/$(shell basename `pwd`)"
+
+
+setup: update link
 
 clean:
 	@rm -rf build
